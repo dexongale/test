@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" /> -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+   
+
+    <!-- <link rel="stylesheet" type="text/css" href="css/index.css" /> -->
+    <title>teacherHelp</title>
+</head>
+
+<body>
+     <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+    <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('e85b6999496cceabe2bd', {
+      cluster: 'eu',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      if (data.message3===fullname){
+          alert(data.message);
+          $.notify.addStyle('happyblue', {
+            html: "<div><span id='me' data-notify-text/>"+
+                "<textarea id='life'  style='width:100%;'></textarea><br><button id='rep' onclick='life()' class='btn btn-primary' style='background-color: green;'> Reply</button>"+            
+            "</div>",
+            classes: {
+              base: {
+                "white-space": "nowrap",
+                "background-color": "lightblue",
+                "color": "black",
+                "padding": "5px"
+              },
+              superblue: {
+                "color": "black",
+                "background-color": "blue"
+              }
+            }
+          });
+            $.notify('Message from '+(data.message2)+"\n"+(data.message), {
+              style: 'happyblue', autoHide: false, clickToHide: false
+            });
+        window.value=data.message2;
+        // alert("window val "+window.value);
+            
+
+      }
+
+    });
+  </script>
+
+  <script type="text/javascript">
+      document.addEventListener("deviceready", onDeviceReady, false);
+          function onDeviceReady(){
+            cordova.plugins.backgroundMode.enable();
+            cordova.plugins.backgroundMode.isActive();
+  
+  }
+  </script>
+
+
+
+  <script type="text/javascript">
+    function life(){
+    var sender=window.value;
+    var sender2=sender.toString();
+        
+      var life = document.getElementById("life").value;
+      // alert(life);
+
+      $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/send.php",
+               method:"POST",
+               data:{fullname:fullname, sender:sender2,life:life},
+               beforeSend: function () {
+                $.notify("loading","info");
+                
+              },
+               success:function(data)
+               {
+                // window.location.href="#messaging";
+                // $('#info').html(data);
+                $.notify("sent","success");
+               }
+              });
+      
+    }
+    
+  </script>
+
+
+
+    <script type="text/javascript" src="js/notify.js"></script>
+    <!-- Start of first page -->
+<div data-role="page" id="startUp">
+    <script type="text/javascript">
+        var url = window.location.pathname;var filename = url.substring(url.lastIndexOf('/')+1);
+        if (localStorage.login=="true"){
+            window.location.href="#notifications";
+            document.getElementById("name").innerHTML=localStorage.fullname;
+            
+        }else{
+            window.location.href="#startUp";
+        }
+    </script>
+
+
+    <div role="main" class="ui-content">
+        <img src="img/icon.gif" style="display: block; padding-top: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;">
+
+
+        <div style="position: absolute; top: 50%; left: 30%;">
+            <h1 class="ml2">HelpMe</h1>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script></div>
+
+
+        <div style="position: fixed; background-color: black; bottom: 0; left: 0; width: 100%; height: 7%; color: white;" class="h2"><a href="#login" style="color: white; text-decoration: none;" >LOG IN</a></div>
+
+        <div style="position: fixed; background-color:  #DCDCDC ; bottom: 7%; left: 0; width: 100%; height: 7%;" class="h2"><a href="#register" style="color: black; text-decoration: none;">SIGN UP</a> </div>
+       
+    </div><!-- /content -->
+
+    
+</div><!-- /page -->
+
+
+<div data-role="page" id="login">
+
+
+    <div role="main" class="ui-content" style="margin-top: 50%;">
+        
+            <input type="text" name="fullname" id="fullname" placeholder="username or fullname" /> 
+            <p id="message"></p>
+            <input type="password" name="password" id="password" placeholder="password" />
+            <p id="message"></p>
+            <input type="submit" class="btn btn-primary" style="background-color: green;" value="continue" id="log"/>   
+          
+    </div><!-- /content -->
+
+
+</div><!-- /page -->
+
+
+<!-- Start of second page -->
+<div data-role="page" id="register">
+    <div role="main" class="ui-content" style="margin-top: 50%;">
+
+        <input type="text" id="full" placeholder="fullname" class="form-control">
+        <p id="message2"></p>
+
+        <select id="role" style="background-color: green;">
+            <option>Lecturer</option>
+            <option>Faculty Intern</option>
+            <option>Tutor</option>
+        </select>
+
+        <select id="dept">
+            <option>Business Administration</option>
+            <option>Computer Science</option>
+            <option>Engineering</option>
+        </select>
+
+        <input type="text" id="course" placeholder="course">
+        <p id="message2"></p>
+        <input type="password" id="pass" placeholder="password">
+        <p id="message2"></p>
+
+        <input type="submit" style="background-color: green;" value="continue" id="reg"/> 
+  
+    </div><!-- /content -->
+</div><!-- /page -->
+
+
+<div data-role="page" id="notifications">
+
+
+    <div role="main" class="ui-content">
+        welcome <br>
+        <span class="display-4" id="name"></span>
+
+        <div  align="center" style="background-color: black; color: white; margin-top: 50%; opacity: 0.5;">Notifications will show up once students need you</div>
+        
+  
+          <button style="background-color: red; position: fixed;bottom: 0;left: 0;" id="out">Log Out</button>
+    </div><!-- /content -->
+
+</div><!-- /page -->
+
+<script type="text/javascript">
+    $("#out").click(function(){
+        localStorage.login="false";
+        window.location.href="#login";
+    })
+</script>
+
+
+
+<script type="text/javascript">
+        $("#log").click(function(){
+            var fullname = $("#fullname").val();
+            var password = $("#password").val();
+          
+
+        if(fullname.length == "" || password.length == ""){
+            $("#message").html("please fill out this field first").fadeIn();
+            $("#message").addClass("error");
+             return false;
+
+        }else{
+
+            $.ajax({
+              type : 'POST',
+              url  : 'https://mainstream-storms.000webhostapp.com/login.php',
+              data : {fullname:fullname,password:password},
+              beforeSend: function () {
+                $.notify("logging you in","info");},
+
+              success : function(data){
+                if (data="success"){
+                 $.notify("welcome","success");
+                 window.location.href="#notifications";
+                 localStorage.fullname=fullname;
+                 alert(localStorage.fullname);
+                 localStorage.login="true";
+                 document.getElementById("name").innerHTML=fullname;
+                 
+                }
+                else{
+                   $.notify("something went wrong","warning"); 
+                }
+               },
+               
+              });
+        }
+
+        });
+
+        $("#reg").click(function(){
+            var fullname = $("#full").val();
+            var role = $("#role").val();
+            var dept = $("#dept").val();
+            var course = $("#course").val();
+            var password = $("#pass").val();
+
+            alert(fullname);
+
+        if(fullname.length == "" || password.length == "" || course.length == ""){
+            $("#message2").html("please fill out this field first").fadeIn();
+            $("#message2").addClass("error");
+             return false;
+
+        }else{
+
+            $.ajax({
+              type : 'POST',
+              url  : 'https://mainstream-storms.000webhostapp.com/register.php',
+              data : {fullname:fullname,role:role,dept:dept,course:course,password:password},
+              beforeSend: function () {
+                $.notify("registering you","info");},
+              success : function(data){
+                 $.notify("welcome","success");
+               },
+               error:function(data){
+                $.notify("something went wrong","danger");
+            }
+              });
+        }
+
+        });
+
+
+    
+</script>
+
+
+
+
+<style type="text/css">
+    #startUp{
+        background-color: white;
+    }
+
+    .ml2 {
+  font-weight: 600;
+  font-size: 2.5em;
+}
+
+.ml2 .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+
+#login{
+    background-color: white;
+}
+#register{
+    background-color: white;
+}
+#notifications{
+    background-color: white;
+}
+</style>
+
+<script type="text/javascript">
+    // Wrap every letter in a span
+$('.ml2').each(function(){
+  $(this).html($(this).text().replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>"));
+});
+
+anime.timeline({loop: true})
+  .add({
+    targets: '.ml2 .letter',
+    scale: [4,1],
+    opacity: [0,1],
+    translateZ: 0,
+    easing: "easeOutExpo",
+    duration: 950,
+    delay: function(el, i) {
+      return 70*i;
+    }
+  }).add({
+    targets: '.ml2',
+    opacity: 0,
+    duration: 1000,
+    easing: "easeOutExpo",
+    delay: 1000
+  });
+</script>
+
+
+</body>
+
+</html>

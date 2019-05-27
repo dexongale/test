@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="css/ionic.min.css" /> -->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css"> 
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+ 
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style2.css" />
+        <script type="text/javascript" src="js/modernizr.custom.86080.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="js/typeahead.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="login.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/fire.js"></script> 
+
+
+         <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+
+
+
+    <!-- <script type="text/javascript" src="auth.js"></script> -->
+    
+
+
+
+    <title>HelpMe</title>
+</head>
+
+<body>
+
+  <script type="text/javascript" src="js/notify.js"></script>
+
+ <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('e85b6999496cceabe2bd', {
+      cluster: 'eu',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      var myName=document.getElementById("em").innerText;
+      if (data.message6==myName){
+          // alert(data.message);
+          $.notify.addStyle('happyblue', {
+            html: "<div id='m1'style='border-radius:15px; width:100%;'><span data-notify-text/></div>",
+
+            classes: {
+              base: {
+                "white-space": "nowrap",
+                "background-color": "lightblue",
+                "color": "black",
+                "padding": "5px",
+                "width":"100%"
+              },
+              superblue: {
+                "color": "black",
+                "background-color": "blue"
+              }
+            }
+          });
+            $.notify('Message from '+(data.message5)+"\n"+(data.message4), {
+              style: 'happyblue', autoHide: false, clickToHide: true
+            });
+
+      }
+
+    });
+
+    
+  </script>
+
+
+
+<script type="text/javascript">
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady(){
+    cordova.plugins.backgroundMode.enable();
+    cordova.plugins.backgroundMode.isActive();
+    checkConnection();
+  }
+  function checkConnection() {
+    var networkState = navigator.network.connection.type;
+    var states = {}; 
+    states[Connection.UNKNOWN]= 'Unknown connection'; 
+    states[Connection.ETHERNET]= 'Ethernet connection'; 
+    states[Connection.WIFI]='WiFi connection';
+    states[Connection.CELL_2G] ='Cell 2G connection';
+    states[Connection.CELL_3G]= 'Cell 3G connection'; 
+    states[Connection.CELL_4G] = 'Cell 4G connection';
+    states[Connection.NONE]= 'No network connection';
+
+    if (states[networkState]=="No network connection"){
+      alert("No network connection");
+      window.location.href="#errorPage";
+    }
+
+    //alert('Connection type: ' + states[networkState]);
+  }
+
+
+      
+    
+  </script> 
+
+
+
+
+
+    <!-- login page -->
+<div data-role="page" id="log">
+  <script type="text/javascript">
+    var url = window.location.pathname;var filename = url.substring(url.lastIndexOf('/')+1);
+    if(localStorage.login=="true"){
+             var url="https://md5.pinasthika.com/api/encrypt?value="+localStorage.email;
+
+          $.get(url, function(data, status){
+            var new2=data.result;
+            $("#em").html(localStorage.email);
+            $("#em2").html(localStorage.email);
+            var imageHash="http://www.gravatar.com/avatar/"+new2;
+              $("#profilepic").attr('src',imageHash);
+              $("#profilepic2").attr('src',imageHash);
+          });window.location.href = "#page1";}
+    else if(localStorage.login=="false"){window.location.href = "#log";}
+  </script>
+
+
+
+   <ul class="cb-slideshow">
+            <li><span>Image 01</span><div></div></li>
+            <li><span>Image 02</span><div></div></li>
+            <li><span>Image 03</span><div></div></li>
+            <li><span>Image 04</span><div></li>
+            <li><span>Image 05</span><div></div></li>
+            <li><span>Image 06</span><div></div></li>
+        </ul>
+        <div class="container">
+            <!-- Codrops top bar -->
+            <div class="codrops-top">
+                
+                
+                <div class="clr"></div>
+            </div><!--/ Codrops top bar -->
+            
+
+
+
+    <div role="main" class="ui-content">
+        <div class="bar bar-header">
+            <div>
+            <h1 class="title" style="background-color: black; opacity: 0.8;">Login</h1>
+            </div>
+        </div>
+        <div class="padding" style="margin-top:55px;">
+            
+            <label class="item-input">
+                <img src="img/icon.gif" style="position: relative; top: 2%;">
+                <input type="email" placeholder="Email" id="email2" required="required">
+            </label>
+            <label class="item-input">
+                
+                <input type="password" placeholder="Password" id="password2">
+            </label>
+            <label class="item-input">
+                <span class="input-label"></span>
+                <a href="forget-password.html" class="button button-clear button-royal">Forget Password ?</a>
+            </label>
+
+            <label class="item-input">
+                <button style="background-color: green; color: white;" id="login" class="button button-block button-positive" onclick="show();">Login</button>
+
+            </label><br>
+            <h2>Don't have an account?</h2>
+            <a href="#reg" class="button button-clear button-royal">Signup here</a>
+        </div>
+    </div><!-- /content -->
+
+
+
+
+        </div> 
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="errorPage">
+
+
+    <div role="main" class="ui-content" style="margin-top: 50%;">
+        
+           <h1>No Connection, Try again later</h1> 
+          
+    </div>
+
+
+</div>
+<style type="text/css">
+  #errorPage{
+    background-color: white;
+  }
+</style>
+
+
+
+<div data-role="page" id="messaging">
+  <div data-role = "panel" id = "panel2">
+            <h2>helpMe</h2>
+            <p><input type="button" name="" id="out2" value="Log Out"></p>
+         </div>
+    <div role="main" class="ui-content">
+   <div style="background-color: black;">
+                <h3 style="position: left;">
+                  <a href="#page1"><img src="img/back.png"></a>
+
+                  &nbsp;&nbsp;
+                  <a href="#panel1"style="background-color: black;"><img id="profilepic2" src=""  style="padding:5px;border:1px solid #ADABAB;border-radius:50px;height:75px;width:75px;"></a><span id="em2"></span></h3>
+            </div>
+
+            <img src="images/profile.png" style="height:200px; width: 200px;  display: block; margin-left: auto; margin-right: auto;">
+              <div id="info"></div>
+             
+
+            What is the emergency?
+
+
+            <textarea rows="10" cols="40" id="message">
+              
+            </textarea>
+            <center><button style="background-color: green; width: 50%; color: white;" onclick="send()">helpMe</button></center>
+    
+</div>
+
+  </div>
+
+
+
+<div data-role="page" id="about">
+     <div style="background-color: black;">
+                <h3 style="position: left;" class="display-4">
+                  <a href="#page1"><img src="img/back.png"></a>
+                  About 
+                </h3>
+            </div>
+
+  <div role="main" class="ui-content">
+
+
+   <img src="images/help.jpg" style="width: 100%;">
+   
+      helpMe is an application that helps users book instant appointments with their lecturers, faculty interns and tutors. Receiver of notification accepts request or rejects with a reason.
+      <p></p>
+      <h1 style="color: red;">FAQs</h1>
+      <h4><b>How do I update my profile image?</b></h4><p></p>
+      helpMe is affiliated to <span id="grav" style="color: blue; text-decoration: underline;">GRAVATAR</span> where you can create an account with you current email address used on helpMe, and update the image there. Changes reflect automatically on helpMe 
+   
+  </div>
+
+  <script type="text/javascript">
+    $("#grav").click(function(){
+      var ref = cordova.InAppBrowser.open('https://en.gravatar.com/', '_blank', 'hidden=yes');
+// some time later...
+    ref.show();
+    });
+
+    
+  </script>
+  
+    
+ 
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div data-role = "page" id = "page1" data-theme="a" style="background-color: white;">
+        <!--  <div data-role = "header" data-theme="b" style="position: left;">
+            <h3 style="position: left;"><a href="#panel1" class="ui-btn ui-icon-bars ui-btn-icon-left"></a></h3>
+         </div> -->
+         <div data-role = "panel" id = "panel1">
+            <h2>helpMe</h2>
+            <!-- <p><input type="button" name="" id="out" value="Log Out"></p> -->
+
+            <p><a href="#about" class="btn btn-primary w-100">About</a></p>
+            <p><button id="out" class="btn btn-danger">Log Out</button></p>
+            
+         </div>
+         
+         <div role = "main" class = "ui-content">
+            <div style="background-color: black;" style="position: fixed; top: 0;">
+                <h3 style="position: left;"><a href="#panel1"style="background-color: black;"><img id="profilepic" src=""  style="padding:5px;border:1px solid #ADABAB;border-radius:50px;height:75px;width:75px;"></a><span id="em"></span></h3>
+            </div>
+
+
+            <div class=".col-md-6">
+                <div class="panel panel-default">
+
+                <div class="md-form w-100">
+                <input type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="search for help" id="search_text">
+
+                 
+                </div>
+
+               <div id="result"></div>
+
+
+               <div id="downImg">
+
+
+                    <!-- <img class="bounce" src="images/click2.png" style="width: 40%; position: absolute;top: 60%; left: 30%;"> -->
+                   <img class="bounce" src="images/down.png" style="width: 20%; position: absolute;top: 70%; left: 40%;">
+               </div>
+
+
+               
+                
+                </div>
+
+                </div>
+
+                <div id="profile">
+                  
+                </div>
+
+
+             
+
+               <!-- <img id="profilepic" src=""  style="padding:5px;border:1px solid #ADABAB;border-radius:50px;height:75px;width:75px;">
+               -->
+
+                 <div data-role="toolbar" data-type="footer" style="position: fixed;bottom: 0; width: 92%;">
+                    <div data-role="navbar" data-iconpos="right" >
+                        <ul>
+                            <li  id="all" class=" btn btn-primary"><a href="#" >All</a></li>
+                            <li id="lec" class=" btn btn-primary"><a href="#" >Lecturers</a></li>
+                            <li id="fac" class=" btn btn-primary"><a href="#" >Fac. Interns</a></li>
+                            <li id="tut" class=" btn btn-primary"><a href="#" >Tutors</a></li>
+                        </ul>
+                    </div><!-- /navbar -->
+                    </div><!-- /footer -->
+
+                
+
+            </div>
+            
+          
+
+
+
+         </div> 
+
+
+       
+         
+</div>
+
+
+
+<!-- Start of second page -->
+<div data-role="page" id="reg">
+
+
+     <ul class="cb-slideshow">
+            <li><span>Image 01</span><div></div></li>
+            <li><span>Image 02</span><div></div></li>
+            <li><span>Image 03</span><div></div></li>
+            <li><span>Image 04</span><div></li>
+            <li><span>Image 05</span><div></div></li>
+            <li><span>Image 06</span><div></div></li>
+        </ul>
+        <div class="container">
+            <!-- Codrops top bar -->
+            <div class="codrops-top">
+                
+                
+                <div class="clr"></div>
+            </div><!--/ Codrops top bar -->
+
+
+  
+
+    <div role="main" class="ui-content">
+        <div style="background-color: black; opacity: 0.8;">
+            <h1 class="title">Create an Account</h1>
+        </div>
+
+    </div>
+    <div class="padding" style="margin-top:75px;">
+        <img src="img/icon.gif">
+
+ 
+
+        <label class="item-input">
+            
+            <input type="email" placeholder="email@domain.com" id="email" required name="email"> 
+        </label>
+
+
+           
+            <input type="password" placeholder="Password" id="password" name="password">
+
+            
+
+        <!-- </label> -->
+        <label class="item-input">
+            <button style="background-color: green; color: white;" class="button button-block button-positive" id="signup" onclick="put()" name="signup">Create an Account</button>
+        </label>
+
+
+        <a href="#log" class="button button-clear button-royal">Login Now</a>
+        
+        
+    </div><!-- /content -->
+
+    
+</div><!-- /page -->
+
+
+
+
+<script type="text/javascript">
+   var config = {
+    apiKey: "AIzaSyAs6OFI0xWhlRNRmo2MBdUcl56IIj1MCQw",
+    authDomain: "mobiledb-5a48f.firebaseapp.com",
+    databaseURL: "https://mobiledb-5a48f.firebaseio.com",
+    projectId: "mobiledb-5a48f",
+    storageBucket: "mobiledb-5a48f.appspot.com",
+    messagingSenderId: "462522093357"
+  };
+  firebase.initializeApp(config);
+</script>
+
+
+<script type="text/javascript">
+  
+  function put(){
+    // $.ajax({
+    //   beforeSend: function(){$("#signup").val('Connecting...');},
+
+    //   success: function(){}
+
+
+    // });
+
+ 
+  // var firestore = firebase.firestore();
+  document.getElementById("signup").innerHTML="Connecting...";
+  var auth = firebase.auth();
+
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const saveButton = document.querySelector("#signup");
+
+
+    const emailSave=email.value;
+    const passwordSave=password.value;
+
+
+
+        firebase.auth().createUserWithEmailAndPassword(emailSave,passwordSave).then(function(){
+          console.log("go");
+          $.notify("All Signed Up","success");
+          document.getElementById("signup").innerHTML="Done";
+          var user = firebase.auth().currentUser;
+
+          user.sendEmailVerification().then(function() {
+            $.notify("An alert is sent to you","error");
+          }).catch(function(error) {
+            // An error happened.
+          });
+          window.location.href="#log";
+        })
+
+        .catch(function(error) {
+          // Handle Errors here.
+          $.notify("failed","error");
+          document.getElementById("signup").innerHTML="Create An Account";
+          // ...
+        });
+
+}
+</script>
+
+
+<script type="text/javascript">
+  
+  function show(){
+  document.getElementById("login").innerHTML="Connecting...";
+
+  var auth = firebase.auth();
+
+  const email = document.getElementById("email2");
+  const password = document.getElementById("password2");
+  const logButton = document.querySelector("#login");
+
+
+    const emailSave=email.value;
+    const passwordSave=password.value;
+
+
+
+        firebase.auth().signInWithEmailAndPassword(emailSave,passwordSave).then(function(){
+          localStorage.email=emailSave;
+          localStorage.login="true";
+          var url="https://md5.pinasthika.com/api/encrypt?value="+localStorage.email;
+
+          $.get(url, function(data, status){
+            var new2=data.result;
+            $("#em").html(localStorage.email);
+            $("#em2").html(localStorage.email);
+            var imageHash="http://www.gravatar.com/avatar/"+new2+"?d=monsterid";
+              $("#profilepic").attr('src',imageHash);
+              $("#profilepic2").attr('src',imageHash);
+          });
+          $.notify("Welcome "+localStorage.email,"success")
+
+          
+
+          window.location.href="#page1";
+          document.getElementById("login").innerHTML="Login";
+
+
+
+         
+
+
+
+
+        })
+
+        .catch(function(error) {
+          $.notify("Oops Something went wrong","error")
+          document.getElementById("login").innerHTML="Login";
+          // ...
+        });
+
+}
+
+
+</script>
+
+<script>
+  function getuserwithid(userID){
+      $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/show.php",
+               method:"POST",
+               data:{id:userID},
+               beforeSend: function () {
+                $.notify("loading","info");
+                
+              },
+               success:function(data)
+               {
+                window.location.href="#messaging";
+                $('#info').html(data);
+               }
+              });
+  }
+
+
+</script>
+
+<script type="text/javascript">
+    function send(){
+      var mess=document.getElementById("message").value;
+      var nam = localStorage.email;
+      var myName=$("#myName").text();
+      // alert(myName);
+
+    $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/send.php",
+               method:"POST",
+               data:{mess:mess,nam:nam,myName:myName},
+               beforeSend: function () {
+                $.notify("loading","info");
+                
+              },
+               success:function(data)
+               {
+                // window.location.href="#messaging";
+                // $('#info').html(data);
+                $.notify("sent","success");
+               }
+              });
+  }
+</script>
+
+
+
+
+
+        <script>
+            $(document).ready(function(){
+                $('#all').click(function(){
+                    $('#downImg').hide();
+                    // clearTimeout(setTimeout(message, 5000));
+                     load_data();
+
+             function load_data(query)
+             {
+              $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/search2.php",
+               method:"POST",
+               data:{query:query},
+               success:function(data)
+               {
+                $('#result').html(data);
+               }
+              });
+             }
+             $('#search_text').keyup(function(){
+              var search = $(this).val();
+              if(search != '')
+              {
+               load_data(search);
+              }
+              else
+              {
+               load_data();
+              }
+             });
+
+                }).addClas('active');
+
+            });
+        </script>
+
+
+        <script>
+            //$(document).ready(function(){
+                $('#lec').click(function(){
+                    $('#downImg').hide();
+                     load_data();
+
+             function load_data(query)
+             {
+              $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/search3.php",
+               method:"POST",
+               data:{query:query},
+               success:function(data)
+               {
+                $('#result').html(data);
+               }
+              });
+             }
+             $('#search_text').keyup(function(){
+              var search = $(this).val();
+              if(search != '')
+              {
+               load_data(search);
+              }
+              else
+              {
+               load_data();
+              }
+             });
+
+                })
+
+            //});
+        </script>
+
+
+        <script>
+            //$(document).ready(function(){
+                $('#fac').click(function(){
+                    $('#downImg').hide();
+                     load_data();
+
+             function load_data(query)
+             {
+              $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/search4.php",
+               method:"POST",
+               data:{query:query},
+               success:function(data)
+               {
+                $('#result').html(data);
+               }
+              });
+             }
+             $('#search_text').keyup(function(){
+              var search = $(this).val();
+              if(search != '')
+              {
+               load_data(search);
+              }
+              else
+              {
+               load_data();
+              }
+             });
+
+                })
+
+            //});
+        </script>
+
+
+        <script>
+            //$(document).ready(function(){
+                $('#tut').click(function(){
+                    $('#downImg').hide();
+                     load_data();
+
+             function load_data(query)
+             {
+              $.ajax({
+               url:"https://mainstream-storms.000webhostapp.com/search5.php",
+               method:"POST",
+               data:{query:query},
+               success:function(data)
+               {
+                $('#result').html(data);
+               }
+              });
+             }
+             $('#search_text').keyup(function(){
+              var search = $(this).val();
+              if(search != '')
+              {
+               load_data(search);
+              }
+              else
+              {
+               load_data();
+              }
+             });
+
+                })
+
+            //});
+
+
+                $("#out").click(function(){
+                  localStorage.login="false";
+                  window.location.href = "#log";
+                });
+        </script>
+
+
+
+
+       
+
+</body>
+
+</html>

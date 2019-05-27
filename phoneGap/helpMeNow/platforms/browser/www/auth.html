@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>auth</title>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAgvHryh0QT07hEJMWQeo2kGH-aqcEBzi8",
+    authDomain: "helpme-241ef.firebaseapp.com",
+    databaseURL: "https://helpme-241ef.firebaseio.com",
+    projectId: "helpme-241ef",
+    storageBucket: "helpme-241ef.appspot.com",
+    messagingSenderId: "362225143222"
+  };
+  firebase.initializeApp(config);
+</script>
+<!-- <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+</head>
+
+<body>
+  <h1>register</h1>
+  <input type="email" name="" id="email">
+  <input type="password" name="" id="password">
+  <input type="button" name="" id="signup" value="sign up" onclick="register();">
+
+
+
+  <script type="text/javascript">
+    function register(){
+      var email=document.getElementById("email");
+      var password=document.getElementById("password");
+
+      if (!email || !password){
+        return console.log("email and password required");
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email,password).catch(function(error)){
+        console.log('register error',error);
+
+        if (error.code=== 'auth/email-already-in-use') {
+          var credential= firebase.auth.EmailAuthProvider.credential(email,password);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
